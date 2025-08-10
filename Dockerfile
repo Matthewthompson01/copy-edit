@@ -17,9 +17,8 @@ EXPOSE 3000
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 
-# Create public directory and copy if exists
-RUN mkdir -p ./public
-COPY --from=builder /app/public/* ./public/ 2>/dev/null || true
+# Copy public directory if it exists, otherwise create empty one
+COPY --from=builder /app/public ./public
 
 # Healthcheck (optional)
 HEALTHCHECK --interval=30s --timeout=3s CMD wget -qO- http://localhost:3000/ || exit 1
