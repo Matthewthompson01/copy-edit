@@ -1,5 +1,7 @@
 "use client";
 import React, { useMemo, useRef, useState } from "react";
+import { parseDiff, Diff, Hunk } from 'react-diff-view';
+import 'react-diff-view/style/index.css';
 
 const Btn = ({ className = "", children, variant = "default", size = "md", ...props }) => {
   const baseClasses = "inline-flex items-center justify-center gap-2 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
@@ -131,8 +133,160 @@ function buildChangesAndScript(original, edited) {
   return { changes: outChanges, script: outScript };
 }
 
+// Create unified diff format for react-diff-view
+function createUnifiedDiff(original, edited, filename = 'content.txt') {
+  const originalLines = original.split('\n');
+  const editedLines = edited.split('\n');
+  
+  // Simple line-by-line diff for better visualization
+  let diffContent = `--- a/${filename}\n+++ b/${filename}\n`;
+  let hunkStart = 1;
+  let hunkSize = Math.max(originalLines.length, editedLines.length);
+  
+  diffContent += `@@ -${hunkStart},${originalLines.length} +${hunkStart},${editedLines.length} @@\n`;
+  
+  // Create a simple diff - this could be enhanced with more sophisticated diffing
+  const maxLength = Math.max(originalLines.length, editedLines.length);
+  for (let i = 0; i < maxLength; i++) {
+    const origLine = originalLines[i];
+    const editedLine = editedLines[i];
+    
+    if (origLine !== undefined && editedLine !== undefined) {
+      if (origLine === editedLine) {
+        diffContent += ` ${origLine}\n`;
+      } else {
+        diffContent += `-${origLine}\n`;
+        diffContent += `+${editedLine}\n`;
+      }
+    } else if (origLine !== undefined) {
+      diffContent += `-${origLine}\n`;
+    } else if (editedLine !== undefined) {
+      diffContent += `+${editedLine}\n`;
+    }
+  }
+  
+  return diffContent;
+}
+
+// Enhanced Diff Component
+const EnhancedDiffView = ({ original, edited, viewType = "unified", title = "Changes" }) => {
+  const diffText = useMemo(() => {
+    if (!original || !edited) return null;
+    return createUnifiedDiff(original, edited);
+  }, [original, edited]);
+
+  const files = useMemo(() => {
+    if (!diffText) return [];
+    return parseDiff(diffText);
+  }, [diffText]);
+
+  if (!files.length) {
+    return (
+      <div className="text-center py-8 text-gray-500">
+        <div className="bg-gray-50 rounded-lg p-6">
+          <p className="text-sm">No changes to display</p>
+          <p className="text-xs text-gray-400 mt-1">Make some edits to see the diff view</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="border border-gray-200 rounded-xl overflow-hidden bg-white diff-view">
+      <div className="bg-gray-50 px-4 py-3 border-b border-gray-200 flex items-center justify-between">
+        <h4 className="font-medium text-gray-800">{title}</h4>
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-gray-500">
+            {files.reduce((total, file) => total + (file.additions || 0), 0)} additions, 
+            {files.reduce((total, file) => total + (file.deletions || 0), 0)} deletions
+          </span>
+        </div>
+      </div>
+      <div className="overflow-x-auto max-h-96 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+        {files.map((file, index) => (
+          <Diff 
+            key={index} 
+            viewType={viewType} 
+            diffType={file.type} 
+            hunks={file.hunks}
+            className="diff"
+          >
+            {(hunks) => 
+              hunks.map((hunk) => (
+                <Hunk 
+                  key={hunk.content} 
+                  hunk={hunk}
+                  className="diff-hunk"
+                />
+              ))
+            }
+          </Diff>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 // Add custom scrollbar styles
 const customScrollbarStyles = `
+  /* React diff view custom styles */
+  .diff-view {
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .diff {
+    border: 1px solid #e1e4e8;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .diff-gutter {
+    background-color: #f6f8fa;
+    border-right: 1px solid #e1e4e8;
+    color: #656d76;
+    width: 60px;
+    text-align: right;
+    padding: 0 8px;
+    user-select: none;
+  }
+  .diff-line {
+    padding: 2px 8px;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .diff-line-add {
+    background-color: #e6ffec;
+    border-left: 3px solid #28a745;
+  }
+  .diff-line-delete {
+    background-color: #ffeef0;
+    border-left: 3px solid #d73a49;
+  }
+  .diff-line-normal {
+    background-color: #ffffff;
+  }
+  .diff-code-add {
+    background-color: #acf2bd;
+    padding: 2px 4px;
+    border-radius: 3px;
+  }
+  .diff-code-delete {
+    background-color: #fdb8c0;
+    padding: 2px 4px;
+    border-radius: 3px;
+  }
+  .diff-hunk-header {
+    background-color: #f1f8ff;
+    border-top: 1px solid #e1e4e8;
+    border-bottom: 1px solid #e1e4e8;
+    padding: 8px 16px;
+    font-size: 12px;
+    color: #586069;
+    font-weight: 600;
+  }
+  
   .scrollbar-thin::-webkit-scrollbar {
     width: 4px;
   }
@@ -240,6 +394,7 @@ export default function Page() {
   const [script, setScript] = useState([]);
   const [mode, setMode] = useState("gpt5"); // "local" | "gpt5"
   const [effort, setEffort] = useState("minimal"); // minimal | low | medium | high
+  const [diffViewType, setDiffViewType] = useState("unified"); // "unified" | "split"
   const baselineRef = useRef("");
 
   function renderPreview() {
@@ -437,6 +592,40 @@ export default function Page() {
             )}
           </div>
         </section>
+
+        {/* Enhanced Diff View Section */}
+        {changes.length > 0 && (
+          <section className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 p-6 space-y-4 transition-all duration-300 hover:shadow-2xl">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-lg font-semibold text-gray-800">📋 Detailed Changes</h2>
+                <p className="text-xs text-gray-500">Side-by-side comparison of original vs edited content</p>
+              </div>
+              <div className="flex gap-2">
+                <Btn 
+                  variant={diffViewType === "split" ? "primary" : "secondary"} 
+                  size="sm"
+                  onClick={() => setDiffViewType("split")}
+                >
+                  📊 Split View
+                </Btn>
+                <Btn 
+                  variant={diffViewType === "unified" ? "primary" : "secondary"} 
+                  size="sm"
+                  onClick={() => setDiffViewType("unified")}
+                >
+                  📄 Unified View
+                </Btn>
+              </div>
+            </div>
+            <EnhancedDiffView 
+              original={baselineRef.current || input} 
+              edited={preview}
+              viewType={diffViewType}
+              title="Content Changes"
+            />
+          </section>
+        )}
 
         <section className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 p-6 space-y-4 transition-all duration-300 hover:shadow-2xl">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
