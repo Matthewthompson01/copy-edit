@@ -1,0 +1,64 @@
+import { NextResponse } from "next/server";
+
+export async function POST(req) {
+  try {
+    const { original, effort = "minimal" } = await req.json();
+    if (typeof original !== "string" || !original.trim()) {
+      return NextResponse.json({ error: "No content" }, { status: 400 });
+    }
+
+    const r = await fetch("https://api.openai.com/v1/responses", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "gpt-5",
+        reasoning: { effort }, // minimal | low | medium | high
+        input: [
+          { role: "system", content: "You are a precise copy editor. Improve clarity, tone, flow, and structure. Keep the author's voice. Avoid factual changes unless clearly wrong." },
+          { role: "user", content:
+`Edit the following text for clarity, tone, structure, and concision.
+Return JSON exactly like: {"edited": string, "recommendations": string[]}
+Text:
+\"\"\"${original}\"\"\"`
+          }
+        ],
+        response_format: {
+          type: "json_schema",
+          json_schema: {
+            name: "CopyEditPayload",
+            schema: {
+              type: "object",
+              additionalProperties: false,
+              properties: {
+                edited: { type: "string" },
+                recommendations: { type: "array", items: { type: "string" }, minItems: 0, maxItems: 10 }
+              },
+              required: ["edited"]
+            }
+          }
+        }
+      }),
+    });
+
+    if (!r.ok) {
+      const text = await r.text();
+      return NextResponse.json({ error: "OpenAI error", details: text }, { status: 502 });
+    }
+
+    const data = await r.json();
+    const parsed = data.output_parsed ?? (() => {
+      try { return JSON.parse(data.output?.[0]?.content?.[0]?.text ?? "{}"); }
+      catch { return {}; }
+    })();
+
+    return NextResponse.json({
+      edited: typeof parsed.edited === "string" ? parsed.edited : original,
+      recommendations: Array.isArray(parsed.recommendations) ? parsed.recommendations : [],
+    });
+  } catch (e) {
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
+  }
+}

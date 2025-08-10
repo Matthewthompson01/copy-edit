@@ -1,0 +1,163 @@
+  ▲ Next.js 14.2.4
+  - Local:        http://localhost:3001
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 999ms
+ ○ Compiling / ...
+ ✓ Compiled / in 521ms (441 modules)
+ HEAD / 200 in 610ms
+ GET / 200 in 33ms
+ ⨯ ./app/api/gpt5-suggest/route.js
+Error: 
+  [31mx[0m Expected unicode escape
+    ,-[[36;1;4m/Users/mattthompson/2.Projects/copyedit-app/app/api/gpt5-suggest/route.js[0m:5:1]
+ [2m 5[0m | export async function POST(req) {
+ [2m 6[0m |   try {
+ [2m 7[0m |     const { original, effort = "minimal" } = await req.json();
+ [2m 8[0m |     if (typeof original \!== "string" || \!original.trim()) {
+    : [31;1m                        ^[0m
+ [2m 9[0m |       return NextResponse.json({ error: "No content" }, { status: 400 });
+ [2m10[0m |     }
+    `----
+
+  [31mx[0m Expected unicode escape
+    ,-[[36;1;4m/Users/mattthompson/2.Projects/copyedit-app/app/api/gpt5-suggest/route.js[0m:5:1]
+ [2m 5[0m | export async function POST(req) {
+ [2m 6[0m |   try {
+ [2m 7[0m |     const { original, effort = "minimal" } = await req.json();
+ [2m 8[0m |     if (typeof original \!== "string" || \!original.trim()) {
+    : [31;1m    ^|[0m[33;1m                                   ^[0m
+    :      [31;1m`-- [31;1mTried to parse the condition for an if statement[0m[0m
+ [2m 9[0m |       return NextResponse.json({ error: "No content" }, { status: 400 });
+ [2m10[0m |     }
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/api/gpt5-suggest/route.js
+ ⨯ ./app/api/gpt5-suggest/route.js
+Error: 
+  [31mx[0m Expected unicode escape
+    ,-[[36;1;4m/Users/mattthompson/2.Projects/copyedit-app/app/api/gpt5-suggest/route.js[0m:5:1]
+ [2m 5[0m | export async function POST(req) {
+ [2m 6[0m |   try {
+ [2m 7[0m |     const { original, effort = "minimal" } = await req.json();
+ [2m 8[0m |     if (typeof original \!== "string" || \!original.trim()) {
+    : [31;1m                        ^[0m
+ [2m 9[0m |       return NextResponse.json({ error: "No content" }, { status: 400 });
+ [2m10[0m |     }
+    `----
+
+  [31mx[0m Expected unicode escape
+    ,-[[36;1;4m/Users/mattthompson/2.Projects/copyedit-app/app/api/gpt5-suggest/route.js[0m:5:1]
+ [2m 5[0m | export async function POST(req) {
+ [2m 6[0m |   try {
+ [2m 7[0m |     const { original, effort = "minimal" } = await req.json();
+ [2m 8[0m |     if (typeof original \!== "string" || \!original.trim()) {
+    : [31;1m    ^|[0m[33;1m                                   ^[0m
+    :      [31;1m`-- [31;1mTried to parse the condition for an if statement[0m[0m
+ [2m 9[0m |       return NextResponse.json({ error: "No content" }, { status: 400 });
+ [2m10[0m |     }
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/api/gpt5-suggest/route.js
+ ○ Compiling /_not-found ...
+ ⨯ ./app/api/gpt5-suggest/route.js
+Error: 
+  [31mx[0m Expected unicode escape
+    ,-[[36;1;4m/Users/mattthompson/2.Projects/copyedit-app/app/api/gpt5-suggest/route.js[0m:5:1]
+ [2m 5[0m | export async function POST(req) {
+ [2m 6[0m |   try {
+ [2m 7[0m |     const { original, effort = "minimal" } = await req.json();
+ [2m 8[0m |     if (typeof original \!== "string" || \!original.trim()) {
+    : [31;1m                        ^[0m
+ [2m 9[0m |       return NextResponse.json({ error: "No content" }, { status: 400 });
+ [2m10[0m |     }
+    `----
+
+  [31mx[0m Expected unicode escape
+    ,-[[36;1;4m/Users/mattthompson/2.Projects/copyedit-app/app/api/gpt5-suggest/route.js[0m:5:1]
+ [2m 5[0m | export async function POST(req) {
+ [2m 6[0m |   try {
+ [2m 7[0m |     const { original, effort = "minimal" } = await req.json();
+ [2m 8[0m |     if (typeof original \!== "string" || \!original.trim()) {
+    : [31;1m    ^|[0m[33;1m                                   ^[0m
+    :      [31;1m`-- [31;1mTried to parse the condition for an if statement[0m[0m
+ [2m 9[0m |       return NextResponse.json({ error: "No content" }, { status: 400 });
+ [2m10[0m |     }
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/api/gpt5-suggest/route.js
+ ⨯ ./app/api/gpt5-suggest/route.js
+Error: 
+  [31mx[0m Expected unicode escape
+    ,-[[36;1;4m/Users/mattthompson/2.Projects/copyedit-app/app/api/gpt5-suggest/route.js[0m:5:1]
+ [2m 5[0m | export async function POST(req) {
+ [2m 6[0m |   try {
+ [2m 7[0m |     const { original, effort = "minimal" } = await req.json();
+ [2m 8[0m |     if (typeof original \!== "string" || \!original.trim()) {
+    : [31;1m                        ^[0m
+ [2m 9[0m |       return NextResponse.json({ error: "No content" }, { status: 400 });
+ [2m10[0m |     }
+    `----
+
+  [31mx[0m Expected unicode escape
+    ,-[[36;1;4m/Users/mattthompson/2.Projects/copyedit-app/app/api/gpt5-suggest/route.js[0m:5:1]
+ [2m 5[0m | export async function POST(req) {
+ [2m 6[0m |   try {
+ [2m 7[0m |     const { original, effort = "minimal" } = await req.json();
+ [2m 8[0m |     if (typeof original \!== "string" || \!original.trim()) {
+    : [31;1m    ^|[0m[33;1m                                   ^[0m
+    :      [31;1m`-- [31;1mTried to parse the condition for an if statement[0m[0m
+ [2m 9[0m |       return NextResponse.json({ error: "No content" }, { status: 400 });
+ [2m10[0m |     }
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/api/gpt5-suggest/route.js
+ POST /api/gpt5-suggest 500 in 854ms
+ GET / 500 in 4ms
+ ⨯ ./app/api/gpt5-suggest/route.js
+Error: 
+  [31mx[0m Unknown regular expression flags.
+    ,-[[36;1;4m/Users/mattthompson/2.Projects/copyedit-app/app/api/gpt5-suggest/route.js[0m:84:1]
+ [2m84[0m |     return NextResponse.json({ error: "Server error" }, { status: 500 });
+ [2m85[0m |   }
+ [2m86[0m | }
+ [2m87[0m | EOF < /dev/null
+    : [31;1m      ^^^^^^^^^[0m
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/api/gpt5-suggest/route.js
+ GET /_next/static/webpack/4ca72fb68350524e.webpack.hot-update.json 500 in 126ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET / 500 in 4ms
+ ✓ Compiled /_error in 189ms (699 modules)
+ GET /_next/static/webpack/4ca72fb68350524e.webpack.hot-update.json 404 in 244ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET / 200 in 15ms
+ POST /api/gpt5-suggest 502 in 1059ms
+ ✓ Compiled in 145ms (262 modules)
+ ✓ Compiled in 218ms (665 modules)
+ GET / 200 in 77ms
+ ✓ Compiled /api/gpt5-suggest in 51ms (293 modules)
+ POST /api/gpt5-suggest 200 in 7023ms
+ POST /api/gpt5-suggest 200 in 4202ms
