@@ -161,3 +161,4 @@ Import trace for requested module:
  ✓ Compiled /api/gpt5-suggest in 51ms (293 modules)
  POST /api/gpt5-suggest 200 in 7023ms
  POST /api/gpt5-suggest 200 in 4202ms
+[?25h
