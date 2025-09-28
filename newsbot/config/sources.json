@@ -1,0 +1,16 @@
+{
+  "feeds": [
+    {
+      "name": "AI News",
+      "url": "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml"
+    },
+    {
+      "name": "Biotech",
+      "url": "https://www.statnews.com/feed/"
+    },
+    {
+      "name": "TechCrunch Startups",
+      "url": "https://techcrunch.com/startups/feed/"
+    }
+  ]
+}

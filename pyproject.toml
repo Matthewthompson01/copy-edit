@@ -1,0 +1,23 @@
+[project]
+name = "newsbot"
+version = "0.1.0"
+description = "Minimal newsletter research CLI"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [{name = "Newsletter Team"}]
+dependencies = [
+    "typer[all]",
+    "feedparser",
+    "trafilatura",
+    "beautifulsoup4",
+    "lxml",
+    "requests",
+]
+
+[project.scripts]
+newsbot = "newsbot.cli:app"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
